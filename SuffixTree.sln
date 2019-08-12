@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29123.88
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuffixTree", "SuffixTree\SuffixTree.csproj", "{B8A5F3DB-50D4-42B6-A763-4E624A230D55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuffixTreeFacts", "SuffixTreeFacts\SuffixTreeFacts.csproj", "{CBFD62BE-89E9-474B-9351-79AB8F6829EF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B8A5F3DB-50D4-42B6-A763-4E624A230D55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8A5F3DB-50D4-42B6-A763-4E624A230D55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8A5F3DB-50D4-42B6-A763-4E624A230D55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8A5F3DB-50D4-42B6-A763-4E624A230D55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBFD62BE-89E9-474B-9351-79AB8F6829EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBFD62BE-89E9-474B-9351-79AB8F6829EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBFD62BE-89E9-474B-9351-79AB8F6829EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBFD62BE-89E9-474B-9351-79AB8F6829EF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1BA7D564-5D02-49B5-93EC-CDBC67E5427A}
+	EndGlobalSection
+EndGlobal
