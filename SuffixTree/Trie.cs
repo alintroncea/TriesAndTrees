@@ -1,27 +1,27 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
 namespace SuffixTree
 {
-    public class Trie : ITrie
+    public class Trie<T> : ITrie<T>
     {
-        private TrieNode root;
+        private TrieNode<T> root;
 
         public Trie()
         {
-            root = new TrieNode(default);
+            root = new TrieNode<T>(default);
         }
-
-        public void Insert(string input)
+        public void Insert(IEnumerable<T> input)
         {
             var currentNode = root;
 
-            for (int i = 0; i < input.Length; i++)
+            foreach (var current in input)
             {
-                var newNode = new TrieNode(input[i]);
+                var newNode = new TrieNode<T>(current);
 
-                var nodeIndex = NodeIsInChildren(currentNode.children, newNode);
+                var nodeIndex = GetNodeIndex(currentNode.children, newNode);
 
                 if (nodeIndex == -1)
                 {
@@ -32,56 +32,56 @@ namespace SuffixTree
                 else
                 {
                     currentNode = currentNode.children[nodeIndex];
-                    continue;
                 }
-
             }
             currentNode.IsEndOfWord = true;
         }
 
-        public void Remove()
+        public void Remove(IEnumerable<T> input)
         {
             throw new NotImplementedException();
         }
 
-        public bool Search(string input)
+        public bool Search(IEnumerable<T> input)
         {
-            var currentNode = root;
-            char c = root.Value;
+            List<T> list = new List<T>();
+            AddInputToList(list, new List<T>(input));           
+            return Find(root, list, 0); ;
+        }
 
-            foreach(char current in input)
+
+        private bool Find(TrieNode<T> node, List<T> list, int currentElementIndex)
+        {
+
+            if (currentElementIndex < list.Count)
             {
-                c = current;
-                foreach (var node in currentNode.children)
+                var nodeToSearch = new TrieNode<T>(list[currentElementIndex++]);
+                int nodeIndex = GetNodeIndex(node.children, nodeToSearch);
+                if (nodeIndex == -1)
                 {
-                    if (!current.Equals(node.Value))
-                    {
-                        return false;
-                    }
-
-                    if (current.Equals(node.Value))
-                    {
-                        var newNode = new TrieNode(current);
-
-                        var nodeIndex = NodeIsInChildren(currentNode.children, newNode);
-                        currentNode = currentNode.children[nodeIndex];
-                    }
+                    return false;
                 }
-            }
 
-            if (currentNode.IsEndOfWord && currentNode.Value.Equals(c))
-            {
-                return true;
-            }    
-           
+                var newNode = node.children[nodeIndex];
+                return currentElementIndex == list.Count && newNode.IsEndOfWord ? true : Find(newNode, list, currentElementIndex);
+            }
             return false;
         }
 
-        private int NodeIsInChildren(List<TrieNode> children, TrieNode node)
+        public void AddInputToList(List<T> list, IEnumerable<T> input)
+        {
+            foreach (var current in input)
+            {
+                list.Add(current);
+            }
+        }
+
+        private int GetNodeIndex(List<TrieNode<T>> children, TrieNode<T> node)
         {
 
             foreach (var current in children)
             {
+
                 if (current.Value.Equals(node.Value))
                 {
                     return children.IndexOf(current);
