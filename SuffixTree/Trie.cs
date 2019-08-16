@@ -21,7 +21,7 @@ namespace SuffixTree
             {
                 var newNode = new TrieNode<T>(current);
 
-                var nodeIndex = GetNodeIndex(currentNode.children, newNode);
+                var nodeIndex = GetNodeIndex(currentNode.children, current);
 
                 if (nodeIndex == -1)
                 {
@@ -44,45 +44,45 @@ namespace SuffixTree
 
         public bool Search(IEnumerable<T> input)
         {
-            List<T> list = new List<T>();
-            AddInputToList(list, new List<T>(input));           
-            return Find(root, list, 0); ;
-        }
-
-
-        private bool Find(TrieNode<T> node, List<T> list, int currentElementIndex)
-        {
-
-            if (currentElementIndex < list.Count)
+            var currentNode = root;
+            foreach (var currentElement in GetCurrentItem(input))
             {
-                var nodeToSearch = new TrieNode<T>(list[currentElementIndex++]);
-                int nodeIndex = GetNodeIndex(node.children, nodeToSearch);
-                if (nodeIndex == -1)
+                currentNode = SearchInNodes(currentNode, currentElement);
+                if (!currentNode.Value.Equals(currentElement))
                 {
                     return false;
                 }
-
-                var newNode = node.children[nodeIndex];
-                return currentElementIndex == list.Count && newNode.IsEndOfWord ? true : Find(newNode, list, currentElementIndex);
             }
-            return false;
+            return true;
         }
 
-        public void AddInputToList(List<T> list, IEnumerable<T> input)
+        private TrieNode<T> SearchInNodes(TrieNode<T> currentNode, T currentElement)
+        {
+
+            int index = GetNodeIndex(currentNode.children, currentElement);
+
+            if (index == -1)
+            {
+                return null;
+            }
+            return currentNode.children[index];
+        }
+
+        private IEnumerable<T> GetCurrentItem(IEnumerable<T> input)
         {
             foreach (var current in input)
             {
-                list.Add(current);
+                yield return current;
             }
         }
 
-        private int GetNodeIndex(List<TrieNode<T>> children, TrieNode<T> node)
+        private int GetNodeIndex(List<TrieNode<T>> children, T value)
         {
 
             foreach (var current in children)
             {
 
-                if (current.Value.Equals(node.Value))
+                if (current.Value.Equals(value))
                 {
                     return children.IndexOf(current);
                 }
