@@ -19,17 +19,14 @@ namespace SuffixTree
 
             foreach (var current in input)
             {
-
                 var nodeIndex = currentNode.IndexOf(current);
 
                 if (nodeIndex == -1)
                 {
                     var newNode = new TrieNode<T>(current);
-
                     currentNode.children.Add(newNode);
                     currentNode = newNode;
                 }
-
                 else
                 {
                     currentNode = currentNode.children[nodeIndex];
@@ -41,10 +38,9 @@ namespace SuffixTree
         public bool Search(IEnumerable<T> input)
         {
             var currentNode = root;
-
             foreach (var currentElement in input)
             {
-                currentNode = currentNode.SearchInNode(currentElement);
+                currentNode = currentNode.RecursionSearch(currentElement, 0);
                 if (currentNode is null)
                 {
                     return false;

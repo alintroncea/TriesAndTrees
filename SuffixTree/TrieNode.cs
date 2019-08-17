@@ -15,18 +15,23 @@ namespace SuffixTree
         }
         public T Value { get; set; }
         public bool IsEndOfWord { get; set; }
-        public TrieNode<T> SearchInNode(T currentElement)
+
+        public TrieNode<T> RecursionSearch(T currentElement, int counter)
         {
-            int index = IndexOf(currentElement);
-            return index == -1 ? null : children[index];
+            if (counter < children.Count)
+            {               
+                var currentNode = children[counter++];
+                return currentNode.Value.Equals(currentElement) ? currentNode : RecursionSearch(currentElement, counter);     
+            }
+            return null;
         }
         public int IndexOf(T value)
         {
-            foreach (var child in children)
+            for (int i = 0; i < children.Count; i++)
             {
-                if (child.Value.Equals(value))
+                if (children[i].Value.Equals(value))
                 {
-                    return children.IndexOf(child);
+                    return i;
                 }
             }
             return -1;
