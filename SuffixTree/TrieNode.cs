@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SuffixTree
@@ -16,15 +17,17 @@ namespace SuffixTree
         public T Value { get; set; }
         public bool IsEndOfWord { get; set; }
 
-        public TrieNode<T> RecursionSearch(T currentElement, int counter)
+        public bool Search(IEnumerable<T> input)
         {
-            if (counter < children.Count)
-            {               
-                var currentNode = children[counter++];
-                return currentNode.Value.Equals(currentElement) ? currentNode : RecursionSearch(currentElement, counter);     
+            if (!input.Any())
+            {
+                return IsEndOfWord;
             }
-            return null;
+
+            var index = IndexOf(input.First());
+            return index != -1 && children[index].Search(input.Skip(1));            
         }
+
         public int IndexOf(T value)
         {
             for (int i = 0; i < children.Count; i++)

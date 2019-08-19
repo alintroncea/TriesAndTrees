@@ -35,23 +35,14 @@ namespace SuffixTree
             currentNode.IsEndOfWord = true;
         }
 
-        public bool Search(IEnumerable<T> input)
-        {
-            var currentNode = root;
-            foreach (var currentElement in input)
-            {
-                currentNode = currentNode.RecursionSearch(currentElement, 0);
-                if (currentNode is null)
-                {
-                    return false;
-                }
-            }
-            return currentNode.IsEndOfWord ? true : false;
-        }
         public void Remove(IEnumerable<T> input)
         {
             throw new NotImplementedException();
         }
-
+        
+        public bool Search(IEnumerable<T> input)
+        {
+            return root.Search(input);
+        }
     }
 }
