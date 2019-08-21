@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SuffixTree
@@ -37,9 +38,11 @@ namespace SuffixTree
 
         public void Remove(IEnumerable<T> input)
         {
-            throw new NotImplementedException();
+            bool isAtTheEnd = true;
+            bool canBeDeleted = true;
+            root.Remove(input, ref isAtTheEnd, ref canBeDeleted);
         }
-        
+
         public bool Search(IEnumerable<T> input)
         {
             return root.Search(input);

@@ -10,13 +10,13 @@ namespace SuffixTree
     {
         public List<TrieNode<T>> children = new List<TrieNode<T>>();
 
+
         public TrieNode(T value)
         {
             Value = value;
         }
         public T Value { get; set; }
         public bool IsEndOfWord { get; set; }
-
         public bool Search(IEnumerable<T> input)
         {
             if (!input.Any())
@@ -25,7 +25,7 @@ namespace SuffixTree
             }
 
             var index = IndexOf(input.First());
-            return index != -1 && children[index].Search(input.Skip(1));            
+            return index != -1 && children[index].Search(input.Skip(1));
         }
 
         public int IndexOf(T value)
@@ -38,6 +38,41 @@ namespace SuffixTree
                 }
             }
             return -1;
+        }
+
+        public bool Remove(IEnumerable<T> input, ref bool isAtTheEnd, ref bool canBeDeleted)
+        {
+            if (!input.Any())
+            {
+                return false;
+            }
+
+            var index = IndexOf(input.First());
+
+            if (index == -1)
+            {
+                return false;
+            }
+            var currentNode = children[index];
+            currentNode.Remove(input.Skip(1), ref isAtTheEnd, ref canBeDeleted);
+
+            if (currentNode.IsEndOfWord)
+            {
+                if(isAtTheEnd)
+                {
+                    isAtTheEnd = false;
+                    currentNode.IsEndOfWord = false;
+                }
+
+                canBeDeleted = false;
+            }
+          
+            if (canBeDeleted)
+            {
+                children.Remove(currentNode);
+            }
+
+            return true;
         }
     }
 }
