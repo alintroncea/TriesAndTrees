@@ -36,11 +36,9 @@ namespace SuffixTree
             currentNode.IsEndOfWord = true;
         }
 
-        public void Remove(IEnumerable<T> input)
+        public bool Remove(IEnumerable<T> input)
         {
-            bool isAtTheEnd = true;
-            bool canBeDeleted = true;
-            root.Remove(input, ref isAtTheEnd, ref canBeDeleted);
+            return root.Remove(input);
         }
 
         public bool Search(IEnumerable<T> input)

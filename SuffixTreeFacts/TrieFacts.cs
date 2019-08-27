@@ -32,17 +32,14 @@ namespace SuffixTree
         public void CheckRemove()
         {
             var trie = new Trie<char>();
+            trie.Insert("c");
             trie.Insert("cat");
-            trie.Insert("cats");
-            trie.Insert("cato");
 
-            trie.Remove("cats");
-            Assert.False(trie.Search("cats"));
-            Assert.True(trie.Search("cat"));
-            Assert.True(trie.Search("cato"));
-            trie.Remove("cat");
+            Assert.True(trie.Remove("cat"));
             Assert.False(trie.Search("cat"));
-            Assert.True(trie.Search("cato"));
+            Assert.True(trie.Search("c"));
+          
+
         }
 
         [Fact]
@@ -53,11 +50,11 @@ namespace SuffixTree
             trie.Insert("cats");
             trie.Insert("cato");
 
-            trie.Remove("cat");
+            Assert.True(trie.Remove("cat"));
             Assert.False(trie.Search("cat"));
             Assert.True(trie.Search("cats"));
             Assert.True(trie.Search("cato"));
-            trie.Remove("cato");
+            Assert.True(trie.Remove("cato"));
             Assert.False(trie.Search("cato"));
             Assert.True(trie.Search("cats"));
         }
@@ -92,6 +89,15 @@ namespace SuffixTree
             Assert.True(trie.Search("abcdx"));
             Assert.True(trie.Search("abcde"));
 
+        }
+
+        [Fact]
+        public void CheckRemove4()
+        {
+            var trie = new Trie<char>();
+            trie.Insert("abcd");
+            Assert.False(trie.Remove("abc"));
+            Assert.True(trie.Remove("abcd"));
         }
     }
 }

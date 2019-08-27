@@ -6,7 +6,8 @@ namespace SuffixTree
     {
         static void Main(string[] args)
         {
-
+            var tree = new SuffixTree();
+            tree.Build("CAGTCAGG");
         }
     }
 }

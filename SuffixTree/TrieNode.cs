@@ -40,39 +40,39 @@ namespace SuffixTree
             return -1;
         }
 
-        public bool Remove(IEnumerable<T> input, ref bool isAtTheEnd, ref bool canBeDeleted)
+        public bool Remove(IEnumerable<T> input)
         {
             if (!input.Any())
             {
-                return false;
+                if (!IsEndOfWord)
+                {
+                    return false;
+                }
+
+                IsEndOfWord = false;
+                return true;
             }
-
             var index = IndexOf(input.First());
-
             if (index == -1)
             {
                 return false;
             }
+
             var currentNode = children[index];
-            currentNode.Remove(input.Skip(1), ref isAtTheEnd, ref canBeDeleted);
+            bool result = currentNode.Remove(input.Skip(1));
 
-            if (currentNode.IsEndOfWord)
+            if (!result)
             {
-                if(isAtTheEnd)
-                {
-                    isAtTheEnd = false;
-                    currentNode.IsEndOfWord = false;
-                }
-
-                canBeDeleted = false;
-            }
-          
-            if (canBeDeleted)
-            {
-                children.Remove(currentNode);
+                return false;
             }
 
+            if (currentNode.children.Count == 0 && !currentNode.IsEndOfWord)
+            {
+                currentNode.children.Remove(currentNode);
+
+            }
             return true;
         }
+
     }
 }
