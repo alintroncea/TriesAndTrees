@@ -8,32 +8,16 @@ namespace SuffixTree
 {
     public class Trie<T> : ITrie<T>
     {
-        private TrieNode<T> root;
-
+        private TreeNode<T> root;
+        
         public Trie()
         {
-            root = new TrieNode<T>(default);
+            root = new TreeNode<T>(default);
         }
+
         public void Insert(IEnumerable<T> input)
         {
-            var currentNode = root;
-
-            foreach (var current in input)
-            {
-                var nodeIndex = currentNode.IndexOf(current);
-
-                if (nodeIndex == -1)
-                {
-                    var newNode = new TrieNode<T>(current);
-                    currentNode.children.Add(newNode);
-                    currentNode = newNode;
-                }
-                else
-                {
-                    currentNode = currentNode.children[nodeIndex];
-                }
-            }
-            currentNode.IsEndOfWord = true;
+            root.Insert(input);          
         }
 
         public bool Remove(IEnumerable<T> input)

@@ -6,17 +6,43 @@ using System.Text;
 
 namespace SuffixTree
 {
-    class TrieNode<T>
+    class TreeNode<T>
     {
-        public List<TrieNode<T>> children = new List<TrieNode<T>>();
+        public List<TreeNode<T>> children;
 
-
-        public TrieNode(T value)
+        public TreeNode(T value)
         {
             Value = value;
+            children = new List<TreeNode<T>>();
         }
+
+
         public T Value { get; set; }
         public bool IsEndOfWord { get; set; }
+        public int SuffixStart { get; set; }
+
+        public void Insert(IEnumerable<T> input)
+        {
+            if (!input.Any())
+            {
+                IsEndOfWord = true;
+                return;
+            }
+
+            var index = IndexOf(input.First());
+
+            if (index == -1)
+            {
+                var newNode = new TreeNode<T>(input.First());
+                children.Add(newNode);
+                newNode.Insert(input.Skip(1));
+            }
+            else
+            {
+                children[index].Insert(input.Skip(1));
+            }
+        }
+
         public bool Search(IEnumerable<T> input)
         {
             if (!input.Any())
@@ -25,7 +51,14 @@ namespace SuffixTree
             }
 
             var index = IndexOf(input.First());
-            return index != -1 && children[index].Search(input.Skip(1));
+
+            if (index == -1)
+            {
+                return false;
+            }
+
+            var currentNode = children[index];
+            return currentNode.Search(input.Skip(1));
         }
 
         public int IndexOf(T value)
@@ -71,6 +104,7 @@ namespace SuffixTree
                 currentNode.children.Remove(currentNode);
 
             }
+
             return true;
         }
 

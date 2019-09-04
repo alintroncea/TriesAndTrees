@@ -38,7 +38,7 @@ namespace SuffixTree
             Assert.True(trie.Remove("cat"));
             Assert.False(trie.Search("cat"));
             Assert.True(trie.Search("c"));
-          
+
 
         }
 

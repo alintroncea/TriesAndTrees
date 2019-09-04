@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-namespace SuffixTree
+using System.IO;
+namespace SuffixTree { 
+public class Program
 {
-    class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            var tree = new SuffixTree();
-            tree.Build("CAGTCAGG");
-        }
+            SuffixTree tree = new SuffixTree("geekforgeeks.net");
+
     }
+}
 }
