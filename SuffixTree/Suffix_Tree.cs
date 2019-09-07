@@ -18,7 +18,10 @@ namespace SuffixTree
             // recursive function insertSuffix() in  
             // SuffixTrieNode class 
             for (int i = 0; i < txt.Length; i++)
+            {
+                Console.WriteLine("Value inserted " + txt.Substring(i) + " at index: " + i);
                 root.insertSuffix(txt.Substring(i), i);
+            }
         }
 
         /* Prints all occurrences of pat in the Suffix Trie S 

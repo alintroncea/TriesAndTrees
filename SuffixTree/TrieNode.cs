@@ -9,22 +9,24 @@ namespace SuffixTree
     class TreeNode<T>
     {
         public List<TreeNode<T>> children;
-
+        public List<int> linesWhereIsFound;
         public TreeNode(T value)
         {
             Value = value;
             children = new List<TreeNode<T>>();
+            linesWhereIsFound = new List<int>();
         }
 
 
         public T Value { get; set; }
         public bool IsEndOfWord { get; set; }
-        public int SuffixStart { get; set; }
 
-        public void Insert(IEnumerable<T> input)
+
+        public void Insert(IEnumerable<T> input, int line)
         {
             if (!input.Any())
             {
+                linesWhereIsFound.Add(line);
                 IsEndOfWord = true;
                 return;
             }
@@ -35,16 +37,18 @@ namespace SuffixTree
             {
                 var newNode = new TreeNode<T>(input.First());
                 children.Add(newNode);
-                newNode.Insert(input.Skip(1));
+                newNode.Insert(input.Skip(1), line);
             }
             else
             {
-                children[index].Insert(input.Skip(1));
+                children[index].Insert(input.Skip(1), line);
             }
         }
 
-        public bool Search(IEnumerable<T> input)
+        public bool Search(IEnumerable<T> input, out List<int> list)
         {
+            list = linesWhereIsFound;
+
             if (!input.Any())
             {
                 return IsEndOfWord;
@@ -58,7 +62,7 @@ namespace SuffixTree
             }
 
             var currentNode = children[index];
-            return currentNode.Search(input.Skip(1));
+            return currentNode.Search(input.Skip(1), out list);
         }
 
         public int IndexOf(T value)
