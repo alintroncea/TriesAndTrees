@@ -15,9 +15,9 @@ namespace SuffixTree
                 {
                     var text = File.ReadAllLines(obj.ToString());
 
-                    for(int i = 1; i < text.Length; i++)
-                    {                      
-                           tree.Build(text[i], i);                       
+                    for(int i = 0; i < text.Length; i++)
+                    {                                       
+                           tree.Build(text[i], i);                                  
                     }
                 }
             }
@@ -28,7 +28,7 @@ namespace SuffixTree
 
             List<int> linesIndexes;
 
-            if(tree.Search("Agency", out linesIndexes))
+            if(tree.Search("eBook", out linesIndexes))
             {
                 foreach (var current in linesIndexes)
                 {

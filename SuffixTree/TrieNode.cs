@@ -10,6 +10,7 @@ namespace SuffixTree
     {
         public List<TreeNode<T>> children;
         public List<int> linesWhereIsFound;
+
         public TreeNode(T value)
         {
             Value = value;
@@ -22,39 +23,39 @@ namespace SuffixTree
         public bool IsEndOfWord { get; set; }
 
 
-        public void Insert(IEnumerable<T> input, int line)
+        public void Insert(ReadOnlySpan<T> input, int line)
         {
-            if (!input.Any())
+            if (input.Length == 0)
             {
                 linesWhereIsFound.Add(line);
                 IsEndOfWord = true;
                 return;
             }
 
-            var index = IndexOf(input.First());
+            var index = IndexOf(input[0]);
 
             if (index == -1)
             {
-                var newNode = new TreeNode<T>(input.First());
+                var newNode = new TreeNode<T>(input[0]);
                 children.Add(newNode);
-                newNode.Insert(input.Skip(1), line);
+                newNode.Insert(input.Slice(1), line);
             }
             else
             {
-                children[index].Insert(input.Skip(1), line);
+                children[index].Insert(input.Slice(1), line);
             }
         }
 
-        public bool Search(IEnumerable<T> input, out List<int> list)
+        public bool Search(ReadOnlySpan<T> input, out List<int> list)
         {
             list = linesWhereIsFound;
 
-            if (!input.Any())
+            if (input.Length == 0)
             {
                 return IsEndOfWord;
             }
 
-            var index = IndexOf(input.First());
+            var index = IndexOf(input[0]);
 
             if (index == -1)
             {
@@ -62,7 +63,7 @@ namespace SuffixTree
             }
 
             var currentNode = children[index];
-            return currentNode.Search(input.Skip(1), out list);
+            return currentNode.Search(input.Slice(1), out list);
         }
 
         public int IndexOf(T value)
@@ -89,6 +90,7 @@ namespace SuffixTree
                 IsEndOfWord = false;
                 return true;
             }
+
             var index = IndexOf(input.First());
             if (index == -1)
             {

@@ -15,7 +15,7 @@ namespace SuffixTree
             root = new TreeNode<T>(default);
         }
 
-        public void Insert(IEnumerable<T> input, int suffixStart)
+        public void Insert(ReadOnlySpan<T> input, int suffixStart)
         {
             root.Insert(input, suffixStart);          
         }
@@ -25,7 +25,7 @@ namespace SuffixTree
             return root.Remove(input);
         }
 
-        public bool Search(IEnumerable<T> input, out List<int> lineIndexes)
+        public bool Search(ReadOnlySpan<T> input, out List<int> lineIndexes)
         {
             return root.Search(input, out lineIndexes);
         }
