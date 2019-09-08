@@ -7,19 +7,38 @@ namespace SuffixTree
     {
         static void Main(string[] args)
         {
+
             Tree tree = new Tree();
-            string[] text;
+            string[] path;
+            string wordToSearch;
 
-            if (args.Length > 0)
+            if (args.Length > 1)
             {
-                foreach (var obj in args)
-                {
-                    text = File.ReadAllLines(obj.ToString());
+                path = File.ReadAllLines(args[0]);
 
-                    for(int i = 0; i < text.Length; i++)
-                    {                                       
-                           tree.Build(text[i], i);                                  
+                for (int i = 0; i < path.Length; i++)
+                {
+                    tree.Build(path[i], i);
+                }
+
+                for (int i = 1; i < args.Length; i++)
+                {
+                    wordToSearch = args[i];
+
+                    List<int> linesIndexes;
+
+                    if (tree.Search(wordToSearch, out linesIndexes))
+                    {
+                        foreach (var current in linesIndexes)
+                        {
+                            Console.WriteLine("Pattern: " + wordToSearch + ", found on line: " + current);
+                        }
                     }
+                    else
+                    {
+                        Console.WriteLine("Pattern: " + wordToSearch + ", not found");
+                    }
+                    Console.WriteLine("=====================");
                 }
             }
             else
@@ -27,23 +46,23 @@ namespace SuffixTree
                 Console.WriteLine("No arguments found");
             }
 
-            tree.Remove("eBook");
+            //tree.Remove("eBook");
 
-            List<int> linesIndexes;
+            //List<int> linesIndexes;
 
-            if(tree.Search("eBook", out linesIndexes))
-            {
-                foreach (var current in linesIndexes)
-                {
-                    Console.WriteLine("Pattern found on line: " + current);
-                }
-            }
-            else
-            {
-                Console.WriteLine("Pattern not found");
-            }
+            //if(tree.Search("eBook", out linesIndexes))
+            //{
+            //    foreach (var current in linesIndexes)
+            //    {
+            //        Console.WriteLine("Pattern found on line: " + current);
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Pattern not found");
+            //}
 
 
-        }    
+        }
     }
 }
