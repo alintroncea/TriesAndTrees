@@ -20,14 +20,19 @@ namespace SuffixTree
             root.Insert(input, suffixStart);          
         }
 
-        public bool Remove(IEnumerable<T> input)
+        public bool Search(ReadOnlySpan<T> input, out List<int> lineIndexes)
+        {
+            return root.Search(input, out lineIndexes);
+        }
+
+        public bool Remove(ReadOnlySpan<T> input)
         {
             return root.Remove(input);
         }
 
-        public bool Search(ReadOnlySpan<T> input, out List<int> lineIndexes)
+        public bool RemoveFromTree(ReadOnlySpan<T> input)
         {
-            return root.Search(input, out lineIndexes);
+            return root.RemoveFromTree(input);
         }
     }
 }

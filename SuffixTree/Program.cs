@@ -8,12 +8,13 @@ namespace SuffixTree
         static void Main(string[] args)
         {
             Tree tree = new Tree();
+            string[] text;
 
             if (args.Length > 0)
             {
                 foreach (var obj in args)
                 {
-                    var text = File.ReadAllLines(obj.ToString());
+                    text = File.ReadAllLines(obj.ToString());
 
                     for(int i = 0; i < text.Length; i++)
                     {                                       
@@ -25,6 +26,8 @@ namespace SuffixTree
             {
                 Console.WriteLine("No arguments found");
             }
+
+            tree.Remove("eBook");
 
             List<int> linesIndexes;
 
@@ -39,7 +42,8 @@ namespace SuffixTree
             {
                 Console.WriteLine("Pattern not found");
             }
-           
+
+
         }    
     }
 }

@@ -7,7 +7,7 @@ namespace SuffixTree
     interface ITrie<T>
     {
         void Insert(ReadOnlySpan<T> input, int lineIndex);
-        bool Remove(IEnumerable<T> input);
+        bool Remove(ReadOnlySpan<T> input);
         bool Search(ReadOnlySpan<T> input, out List<int> lineIndexes);
     }
 }

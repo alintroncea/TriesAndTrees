@@ -78,9 +78,9 @@ namespace SuffixTree
             return -1;
         }
 
-        public bool Remove(IEnumerable<T> input)
+        public bool Remove(ReadOnlySpan<T> input)
         {
-            if (!input.Any())
+            if (input.Length == 0)
             {
                 if (!IsEndOfWord)
                 {
@@ -91,14 +91,14 @@ namespace SuffixTree
                 return true;
             }
 
-            var index = IndexOf(input.First());
+            var index = IndexOf(input[0]);
             if (index == -1)
             {
                 return false;
             }
 
             var currentNode = children[index];
-            bool result = currentNode.Remove(input.Skip(1));
+            bool result = currentNode.Remove(input.Slice(1));
 
             if (!result)
             {
@@ -114,5 +114,15 @@ namespace SuffixTree
             return true;
         }
 
+        public bool RemoveFromTree(ReadOnlySpan<T> input)
+        {
+            List<int> list;
+
+            while (Search(input, out list))
+            {
+                Remove(input);
+            }
+            return true;
+        }
     }
 }

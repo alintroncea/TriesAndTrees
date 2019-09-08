@@ -26,5 +26,10 @@ namespace SuffixTree
         {
             return trie.Search(input, out linesIndexes);
         }
+
+        public bool Remove(ReadOnlySpan<char> input)
+        {
+            return trie.RemoveFromTree(input);
+        }
     }
 }
