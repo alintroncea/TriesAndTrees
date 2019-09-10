@@ -6,15 +6,15 @@ using System.Text;
 
 namespace SuffixTree
 {
-    class TreeNode<T>
+    class TrieNode<T>
     {
-        public List<TreeNode<T>> children;
+        public HashSet<TrieNode<T>> children;
         public List<int> linesWhereIsFound;
 
-        public TreeNode(T value)
+        public TrieNode(T value)
         {
             Value = value;
-            children = new List<TreeNode<T>>();
+            children = new HashSet<TrieNode<T>>(new TrieNodeEqualityComparer<T>());
             linesWhereIsFound = new List<int>();
         }
 
@@ -32,17 +32,17 @@ namespace SuffixTree
                 return;
             }
 
-            var index = IndexOf(input[0]);
 
-            if (index == -1)
+            TrieNode<T> newNode = new TrieNode<T>(input[0]);
+
+            if (!children.TryGetValue(newNode, out TrieNode<T> currentNode))
             {
-                var newNode = new TreeNode<T>(input[0]);
                 children.Add(newNode);
                 newNode.Insert(input.Slice(1), line);
             }
             else
             {
-                children[index].Insert(input.Slice(1), line);
+                currentNode.Insert(input.Slice(1), line);
             }
         }
 
@@ -55,14 +55,11 @@ namespace SuffixTree
                 return IsEndOfWord;
             }
 
-            var index = IndexOf(input[0]);
-
-            if (index == -1)
+            if (!children.TryGetValue(new TrieNode<T>(input[0]), out TrieNode<T> currentNode))
             {
                 return false;
             }
 
-            var currentNode = children[index];
             return currentNode.Search(input.Slice(1), out list);
         }
 
@@ -70,7 +67,7 @@ namespace SuffixTree
         {
             for (int i = 0; i < children.Count; i++)
             {
-                if (children[i].Value.Equals(value))
+                if (children.ElementAt(i).Value.Equals(value))
                 {
                     return i;
                 }
@@ -84,6 +81,7 @@ namespace SuffixTree
             {
                 if (!IsEndOfWord)
                 {
+                    linesWhereIsFound.Clear();
                     return false;
                 }
 
@@ -97,7 +95,7 @@ namespace SuffixTree
                 return false;
             }
 
-            var currentNode = children[index];
+            var currentNode = children.ElementAt(index);
             bool result = currentNode.Remove(input.Slice(1));
 
             if (!result)
@@ -111,17 +109,6 @@ namespace SuffixTree
 
             }
 
-            return true;
-        }
-
-        public bool RemoveFromTree(ReadOnlySpan<T> input)
-        {
-            List<int> list;
-
-            while (Search(input, out list))
-            {
-                Remove(input);
-            }
             return true;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 namespace SuffixTree
 {
@@ -8,61 +9,66 @@ namespace SuffixTree
         static void Main(string[] args)
         {
 
-            Tree tree = new Tree();
-            string[] path;
-            string wordToSearch;
 
-            if (args.Length > 1)
-            {
-                path = File.ReadAllLines(args[0]);
-
-                for (int i = 0; i < path.Length; i++)
-                {
-                    tree.Build(path[i], i);
-                }
-
-                for (int i = 1; i < args.Length; i++)
-                {
-                    wordToSearch = args[i];
-
-                    List<int> linesIndexes;
-
-                    if (tree.Search(wordToSearch, out linesIndexes))
-                    {
-                        foreach (var current in linesIndexes)
-                        {
-                            Console.WriteLine("Pattern: " + wordToSearch + ", found on line: " + current);
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Pattern: " + wordToSearch + ", not found");
-                    }
-                    Console.WriteLine("=====================");
-                }
-            }
-            else
+            if (args.Length <= 1)
             {
                 Console.WriteLine("No arguments found");
+                return;
             }
 
-            //tree.Remove("eBook");
+            var tree = new Tree();
+            var content = File.ReadAllLines(args[0]);
+            var stopwatch = new Stopwatch();
+            Console.WriteLine("Building ......");
+            stopwatch.Start();
 
-            //List<int> linesIndexes;
+            for (int i = 0; i < content.Length; i++)
+            {              
+                tree.Build(content[i], i);
+            }
+            stopwatch.Stop();
+            Console.WriteLine($"Build took {stopwatch.Elapsed}");
 
-            //if(tree.Search("eBook", out linesIndexes))
+            for (int i = 1; i < args.Length; i++)
+            {
+                var wordToSearch = args[i];
+
+                List<int> linesIndexes;
+
+                stopwatch.Restart();
+
+                var found = tree.Search(wordToSearch, out linesIndexes);
+                stopwatch.Stop();
+                Console.WriteLine($"Search of {wordToSearch} took {stopwatch.Elapsed}");
+
+                if (found)
+                {
+                    foreach (var current in linesIndexes)
+                    {
+                        Console.WriteLine(content[current]);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Pattern: " + wordToSearch + ", not found");
+                }
+                Console.WriteLine("=====================");
+            }
+
+            //Console.WriteLine("Searching with for loop......");
+
+            //stopwatch.Reset();
+            //stopwatch.Start();
+
+            //for (int i = 0; i < content.Length; i++)
             //{
-            //    foreach (var current in linesIndexes)
+            //    if (content[i].Contains(args[1]))
             //    {
-            //        Console.WriteLine("Pattern found on line: " + current);
+            //        Console.WriteLine(content[i]);
             //    }
             //}
-            //else
-            //{
-            //    Console.WriteLine("Pattern not found");
-            //}
-
-
+            //stopwatch.Stop();
+            //Console.WriteLine($"Search took {stopwatch.Elapsed}");
         }
     }
 }

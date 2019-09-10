@@ -9,7 +9,6 @@ namespace SuffixTree
     {
         Trie<char> trie = new Trie<char>();
 
-
         public void Build(ReadOnlySpan<char> line, int lineIndex)
         {           
             for (int i = 1; i <= line.Length; i++)
@@ -29,7 +28,7 @@ namespace SuffixTree
 
         public bool Remove(ReadOnlySpan<char> input)
         {
-            return trie.RemoveFromTree(input);
+            return trie.Remove(input);
         }
     }
 }

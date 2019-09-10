@@ -8,11 +8,11 @@ namespace SuffixTree
 {
     public class Trie<T> : ITrie<T>
     {
-        private TreeNode<T> root;
+        private TrieNode<T> root;
         
         public Trie()
         {
-            root = new TreeNode<T>(default);
+            root = new TrieNode<T>(default);
         }
 
         public void Insert(ReadOnlySpan<T> input, int suffixStart)
@@ -28,11 +28,6 @@ namespace SuffixTree
         public bool Remove(ReadOnlySpan<T> input)
         {
             return root.Remove(input);
-        }
-
-        public bool RemoveFromTree(ReadOnlySpan<T> input)
-        {
-            return root.RemoveFromTree(input);
         }
     }
 }
