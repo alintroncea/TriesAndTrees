@@ -8,14 +8,14 @@ namespace SuffixTree
 {
     class TrieNode<T>
     {
-        public HashSet<int[]> indexes;
+        List<Results> results;
         public HashSet<TrieNode<T>> children;
 
         public TrieNode(T value)
         {
             Value = value;
             children = new HashSet<TrieNode<T>>(new TrieNodeEqualityComparer<T>());
-            indexes = new HashSet<int[]>();
+            results = new List<Results>();
         }
 
 
@@ -25,9 +25,31 @@ namespace SuffixTree
 
         public void Insert(ReadOnlySpan<T> input, int line, int startingIndex, int endingIndex)
         {
+
             if (input.Length == 0)
             {
-                indexes.Add(new int[] { line, startingIndex, endingIndex });
+                bool foundLine = false;
+
+                var newResult = new Results();
+                newResult.Line = line;
+                newResult.Indexes = new List<int[]>();
+                newResult.Indexes.Add(new int[] { startingIndex, endingIndex });
+
+
+                foreach (var current in results)
+                {
+                    if(current.Line == newResult.Line)
+                    {
+                        current.Indexes.Add(new int[] { startingIndex, endingIndex });
+                        foundLine = true;
+                    }
+                }
+
+                if (!foundLine)
+                {
+                    results.Add(newResult);
+                }
+
                 IsEndOfWord = true;
                 return;
             }
@@ -46,9 +68,9 @@ namespace SuffixTree
             }
         }
 
-        public bool Search(ReadOnlySpan<T> input, out HashSet<int[]> whereIsFound)
+        public bool Search(ReadOnlySpan<T> input, out List<Results> whereIsFound)
         {
-            whereIsFound = indexes;
+            whereIsFound = results;
 
             if (input.Length == 0)
             {
@@ -69,7 +91,7 @@ namespace SuffixTree
             {
                 if (!IsEndOfWord)
                 {
-                    indexes.Clear();
+                    results.Clear();
                     return false;
                 }
 

@@ -1,9 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
 namespace SuffixTree
 {
+    public struct Results
+    {
+        public int Line;
+        public List<int[]> Indexes;
+
+    }
+
     public class Tree
     {
         Trie<char> trie = new Trie<char>();
@@ -24,7 +32,7 @@ namespace SuffixTree
             }
         }
 
-        public bool Search(ReadOnlySpan<char> input, out HashSet<int[]> whereIsFound)
+        public bool Search(ReadOnlySpan<char> input, out List<Results> whereIsFound)
         {
             return trie.Search(input, out whereIsFound);
         }

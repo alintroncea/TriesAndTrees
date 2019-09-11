@@ -2,7 +2,7 @@
   "profiles": {
     "SuffixTree": {
       "commandName": "Project",
-      "commandLineArgs": "C:\\Users\\Alin\\Desktop\\Products.txt AMD"
+      "commandLineArgs": "C:\\Users\\Alin\\Desktop\\Products.txt Intel"
     }
   }
 }

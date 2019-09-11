@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Drawing;
 using Xceed.Wpf.Toolkit;
+using Color = System.Drawing.Color;
 
 namespace SuffixTree
 {
@@ -15,7 +16,7 @@ namespace SuffixTree
 
             var tree = new Tree();
             var content = File.ReadAllLines(args[0]);
-            
+
 
             for (int i = 0; i < content.Length; i++)
             {
@@ -26,27 +27,62 @@ namespace SuffixTree
             {
                 var wordToSearch = args[i];
                 Console.WriteLine("Searching for..." + wordToSearch);
-                HashSet<int[]> whereIsFound;
+                List<Results> whereIsFound;
 
                 var found = tree.Search(wordToSearch, out whereIsFound);
 
-                var refine = new RefineResults(whereIsFound);
-
-                var results = refine.GetResult();
-
-                foreach(var current in results)
+                if (found)
                 {
-                    Console.WriteLine("Line: " + current.line);
-
-                    foreach(var indexes in current.indexes)
+                    foreach (var current in whereIsFound)
                     {
-                        Console.WriteLine("Starting index: " + indexes[0] + " Ending index: " + indexes[1]);
+                        var counter = 0;
+                        var lineWithPattern = content[current.Line];
+                        List<int> indexes = new List<int>();
+
+                        foreach (var array in current.Indexes)
+                        {
+                            indexes.Add(array[0]);
+                            indexes.Add(array[1]);
+
+                        }
+
+
+                        for (int x = 0; x < lineWithPattern.Length; x++)
+                        {
+                            if (counter < indexes.Count)
+                            {
+                                bool counterIsEven = counter % 2 == 0;
+
+                                if (x == indexes[counter])
+                                {
+                                    if (counterIsEven)
+                                    {
+                                        Console.BackgroundColor = ConsoleColor.Green;
+                                    }
+                                    else
+                                    {
+                                        Console.ResetColor();
+                                    }
+
+                                    counter++;
+                                }
+                            }
+                            Console.Write(lineWithPattern[x]);
+                        }
+
+                        counter = 0;
+                        Console.WriteLine();
                     }
                 }
+                else
+                {
+                    Console.WriteLine("Pattern not found");
+                }
+
             }
 
         }
 
-    
+
     }
 }

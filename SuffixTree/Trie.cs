@@ -20,7 +20,7 @@ namespace SuffixTree
             root.Insert(input, lineIndex, startingIndex, endingIndex);          
         }
 
-        public bool Search(ReadOnlySpan<T> input, out HashSet<int[]> whereIsFound)
+        public bool Search(ReadOnlySpan<T> input, out List<Results> whereIsFound)
         {
             return root.Search(input, out whereIsFound);
         }

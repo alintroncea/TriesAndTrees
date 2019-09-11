@@ -12,7 +12,7 @@ namespace SuffixTree
         [Fact]
         public void TestRemove()
         {
-            HashSet<int[]> indexes;
+            List<Results> indexes;
 
             Tree tree = new Tree();
             tree.Build("banana", 0);
