@@ -20,9 +20,9 @@ namespace SuffixTree
             root.Insert(input, lineIndex, startingIndex, endingIndex);          
         }
 
-        public bool Search(ReadOnlySpan<T> input, out List<int> lineIndexes, out List<int[]> indexesWhereIsFound)
+        public bool Search(ReadOnlySpan<T> input, out HashSet<int[]> whereIsFound)
         {
-            return root.Search(input, out lineIndexes, out indexesWhereIsFound);
+            return root.Search(input, out whereIsFound);
         }
 
         public bool Remove(ReadOnlySpan<T> input)

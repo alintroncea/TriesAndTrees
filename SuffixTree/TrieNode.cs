@@ -8,17 +8,14 @@ namespace SuffixTree
 {
     class TrieNode<T>
     {
+        public HashSet<int[]> indexes;
         public HashSet<TrieNode<T>> children;
-        public List<int> linesWhereIsFoundList;
-        public List<int[]> indexesWhereIsFoundList;
-
 
         public TrieNode(T value)
         {
             Value = value;
             children = new HashSet<TrieNode<T>>(new TrieNodeEqualityComparer<T>());
-            linesWhereIsFoundList = new List<int>();
-            indexesWhereIsFoundList = new List<int[]>();
+            indexes = new HashSet<int[]>();
         }
 
 
@@ -30,8 +27,7 @@ namespace SuffixTree
         {
             if (input.Length == 0)
             {
-                linesWhereIsFoundList.Add(line);
-                indexesWhereIsFoundList.Add(new int[] { startingIndex, endingIndex });
+                indexes.Add(new int[] { line, startingIndex, endingIndex });
                 IsEndOfWord = true;
                 return;
             }
@@ -50,10 +46,9 @@ namespace SuffixTree
             }
         }
 
-        public bool Search(ReadOnlySpan<T> input, out List<int> linesWhereIsFound, out List<int[]> indexesWhereIsFound)
+        public bool Search(ReadOnlySpan<T> input, out HashSet<int[]> whereIsFound)
         {
-            linesWhereIsFound = linesWhereIsFoundList;
-            indexesWhereIsFound = indexesWhereIsFoundList;
+            whereIsFound = indexes;
 
             if (input.Length == 0)
             {
@@ -65,7 +60,7 @@ namespace SuffixTree
                 return false;
             }
 
-            return currentNode.Search(input.Slice(1), out linesWhereIsFound, out indexesWhereIsFound);
+            return currentNode.Search(input.Slice(1), out whereIsFound);
         }
 
         public bool Remove(ReadOnlySpan<T> input)
@@ -74,8 +69,7 @@ namespace SuffixTree
             {
                 if (!IsEndOfWord)
                 {
-                    linesWhereIsFoundList.Clear();
-                    indexesWhereIsFoundList.Clear();
+                    indexes.Clear();
                     return false;
                 }
 

@@ -15,7 +15,7 @@ namespace SuffixTree
 
             var tree = new Tree();
             var content = File.ReadAllLines(args[0]);
-            Console.WriteLine("Building ......");
+            
 
             for (int i = 0; i < content.Length; i++)
             {
@@ -25,22 +25,28 @@ namespace SuffixTree
             for (int i = 1; i < args.Length; i++)
             {
                 var wordToSearch = args[i];
+                Console.WriteLine("Searching for..." + wordToSearch);
+                HashSet<int[]> whereIsFound;
 
-                List<int> linesWhereIsFound;
-                List<int[]> indexesWhereIsFound;
+                var found = tree.Search(wordToSearch, out whereIsFound);
 
-                if (tree.Search(wordToSearch, out linesWhereIsFound, out indexesWhereIsFound))
+                var refine = new RefineResults(whereIsFound);
+
+                var results = refine.GetResult();
+
+                foreach(var current in results)
                 {
-                    Console.WriteLine(linesWhereIsFound.Count);
-                    Console.WriteLine(indexesWhereIsFound.Count);
+                    Console.WriteLine("Line: " + current.line);
+
+                    foreach(var indexes in current.indexes)
+                    {
+                        Console.WriteLine("Starting index: " + indexes[0] + " Ending index: " + indexes[1]);
+                    }
                 }
-                else
-                {
-                    Console.WriteLine("Pattern: " + wordToSearch + ", not found");
-                }
-                Console.WriteLine("=====================");
             }
 
         }
+
+    
     }
 }
