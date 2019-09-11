@@ -9,13 +9,16 @@ namespace SuffixTree
     class TrieNode<T>
     {
         public HashSet<TrieNode<T>> children;
-        public List<int> linesWhereIsFound;
+        public List<int> linesWhereIsFoundList;
+        public List<int[]> indexesWhereIsFoundList;
+
 
         public TrieNode(T value)
         {
             Value = value;
             children = new HashSet<TrieNode<T>>(new TrieNodeEqualityComparer<T>());
-            linesWhereIsFound = new List<int>();
+            linesWhereIsFoundList = new List<int>();
+            indexesWhereIsFoundList = new List<int[]>();
         }
 
 
@@ -23,11 +26,12 @@ namespace SuffixTree
         public bool IsEndOfWord { get; set; }
 
 
-        public void Insert(ReadOnlySpan<T> input, int line)
+        public void Insert(ReadOnlySpan<T> input, int line, int startingIndex, int endingIndex)
         {
             if (input.Length == 0)
             {
-                linesWhereIsFound.Add(line);
+                linesWhereIsFoundList.Add(line);
+                indexesWhereIsFoundList.Add(new int[] { startingIndex, endingIndex });
                 IsEndOfWord = true;
                 return;
             }
@@ -38,17 +42,18 @@ namespace SuffixTree
             if (!children.TryGetValue(newNode, out TrieNode<T> currentNode))
             {
                 children.Add(newNode);
-                newNode.Insert(input.Slice(1), line);
+                newNode.Insert(input.Slice(1), line, startingIndex, endingIndex);
             }
             else
             {
-                currentNode.Insert(input.Slice(1), line);
+                currentNode.Insert(input.Slice(1), line, startingIndex, endingIndex);
             }
         }
 
-        public bool Search(ReadOnlySpan<T> input, out List<int> list)
+        public bool Search(ReadOnlySpan<T> input, out List<int> linesWhereIsFound, out List<int[]> indexesWhereIsFound)
         {
-            list = linesWhereIsFound;
+            linesWhereIsFound = linesWhereIsFoundList;
+            indexesWhereIsFound = indexesWhereIsFoundList;
 
             if (input.Length == 0)
             {
@@ -60,19 +65,7 @@ namespace SuffixTree
                 return false;
             }
 
-            return currentNode.Search(input.Slice(1), out list);
-        }
-
-        public int IndexOf(T value)
-        {
-            for (int i = 0; i < children.Count; i++)
-            {
-                if (children.ElementAt(i).Value.Equals(value))
-                {
-                    return i;
-                }
-            }
-            return -1;
+            return currentNode.Search(input.Slice(1), out linesWhereIsFound, out indexesWhereIsFound);
         }
 
         public bool Remove(ReadOnlySpan<T> input)
@@ -81,7 +74,8 @@ namespace SuffixTree
             {
                 if (!IsEndOfWord)
                 {
-                    linesWhereIsFound.Clear();
+                    linesWhereIsFoundList.Clear();
+                    indexesWhereIsFoundList.Clear();
                     return false;
                 }
 
@@ -89,13 +83,10 @@ namespace SuffixTree
                 return true;
             }
 
-            var index = IndexOf(input[0]);
-            if (index == -1)
+            if (!children.TryGetValue(new TrieNode<T>(input[0]), out TrieNode<T> currentNode))
             {
                 return false;
             }
-
-            var currentNode = children.ElementAt(index);
             bool result = currentNode.Remove(input.Slice(1));
 
             if (!result)

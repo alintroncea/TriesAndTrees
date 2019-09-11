@@ -10,20 +10,24 @@ namespace SuffixTree
         Trie<char> trie = new Trie<char>();
 
         public void Build(ReadOnlySpan<char> line, int lineIndex)
-        {           
+        {
+            Console.WriteLine("bana");
             for (int i = 1; i <= line.Length; i++)
             {
                 for (int j = 0; j <= line.Length - i; j++)
                 {
                     var suffix = line.Slice(j, i);
-                    trie.Insert(suffix, lineIndex);
+                    var suffixStartIndex = j;
+                    var suffixEndIndex = suffix.Length + j;
+
+                    trie.Insert(suffix, lineIndex, suffixStartIndex, suffixEndIndex);
                 }
             }
         }
 
-        public bool Search(ReadOnlySpan<char> input, out List<int> linesIndexes)
+        public bool Search(ReadOnlySpan<char> input, out List<int> linesWhereIsFound, out List<int[]> indexesWhereIsFound)
         {
-            return trie.Search(input, out linesIndexes);
+            return trie.Search(input, out linesWhereIsFound, out indexesWhereIsFound);
         }
 
         public bool Remove(ReadOnlySpan<char> input)

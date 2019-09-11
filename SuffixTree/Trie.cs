@@ -15,14 +15,14 @@ namespace SuffixTree
             root = new TrieNode<T>(default);
         }
 
-        public void Insert(ReadOnlySpan<T> input, int suffixStart)
+        public void Insert(ReadOnlySpan<T> input, int lineIndex, int startingIndex, int endingIndex)
         {
-            root.Insert(input, suffixStart);          
+            root.Insert(input, lineIndex, startingIndex, endingIndex);          
         }
 
-        public bool Search(ReadOnlySpan<T> input, out List<int> lineIndexes)
+        public bool Search(ReadOnlySpan<T> input, out List<int> lineIndexes, out List<int[]> indexesWhereIsFound)
         {
-            return root.Search(input, out lineIndexes);
+            return root.Search(input, out lineIndexes, out indexesWhereIsFound);
         }
 
         public bool Remove(ReadOnlySpan<T> input)
