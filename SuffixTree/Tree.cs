@@ -21,7 +21,7 @@ namespace SuffixTree
             }
         }
 
-        public bool Search(ReadOnlySpan<char> input, out List<int> linesIndexes)
+        public bool Search(ReadOnlySpan<char> input, out HashSet<int> linesIndexes)
         {
             return trie.Search(input, out linesIndexes);
         }

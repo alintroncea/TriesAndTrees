@@ -8,6 +8,6 @@ namespace SuffixTree
     {
         void Insert(ReadOnlySpan<T> input, int lineIndex);
         bool Remove(ReadOnlySpan<T> input);
-        bool Search(ReadOnlySpan<T> input, out List<int> lineIndexes);
+        bool Search(ReadOnlySpan<T> input, out HashSet<int> lineIndexes);
     }
 }

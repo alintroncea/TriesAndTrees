@@ -20,7 +20,7 @@ namespace SuffixTree
             root.Insert(input, suffixStart);          
         }
 
-        public bool Search(ReadOnlySpan<T> input, out List<int> lineIndexes)
+        public bool Search(ReadOnlySpan<T> input, out HashSet<int> lineIndexes)
         {
             return root.Search(input, out lineIndexes);
         }

@@ -9,13 +9,13 @@ namespace SuffixTree
     class TrieNode<T>
     {
         public HashSet<TrieNode<T>> children;
-        public List<int> linesWhereIsFound;
+        public HashSet<int> linesWhereIsFound;
 
         public TrieNode(T value)
         {
             Value = value;
             children = new HashSet<TrieNode<T>>(new TrieNodeEqualityComparer<T>());
-            linesWhereIsFound = new List<int>();
+            linesWhereIsFound = new HashSet<int>();
         }
 
 
@@ -46,7 +46,7 @@ namespace SuffixTree
             }
         }
 
-        public bool Search(ReadOnlySpan<T> input, out List<int> list)
+        public bool Search(ReadOnlySpan<T> input, out HashSet<int> list)
         {
             list = linesWhereIsFound;
 
