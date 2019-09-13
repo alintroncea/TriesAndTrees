@@ -15,9 +15,9 @@ namespace SuffixTree
             root = new TrieNode<T>(default);
         }
 
-        public void Insert(ReadOnlySpan<T> input, int suffixStart)
+        public void Insert(ReadOnlySpan<T> input, int lineIndex)
         {
-            root.Insert(input, suffixStart);          
+            root.Insert(input, lineIndex);          
         }
 
         public bool Search(ReadOnlySpan<T> input, out HashSet<int> lineIndexes)

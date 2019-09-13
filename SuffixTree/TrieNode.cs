@@ -10,6 +10,7 @@ namespace SuffixTree
     {
         public HashSet<TrieNode<T>> children;
         public HashSet<int> linesWhereIsFound;
+        public List<int> propertyIndex;
 
         public TrieNode(T value)
         {

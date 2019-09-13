@@ -29,7 +29,7 @@ namespace SuffixTree
                 products.AddProduct(product);
             }
 
-            products.Search("AMD");
+            products.Search("Intel");
         }
     }
 }
